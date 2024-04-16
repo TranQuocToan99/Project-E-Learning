@@ -101,9 +101,9 @@ namespace E_Learning.Services
 
         public static GetCoursesStudentJoinedResponse GetCoursesStudentJoined(string studentId)
         {
-            var studentJoinedCourses = Storage.Database.studentJoinedCourses;
+            var studentJoinedCourses = Storage.Database.studentsJoinedCourse;
             var courses = Storage.Database.courses;
-            var  courseJoined = new GetCoursesStudentJoinedResponse();
+            var courseJoined = new GetCoursesStudentJoinedResponse();
 
             var targetCouresId = studentJoinedCourses
                 .Where(x => x.StudentId == studentId)
@@ -126,5 +126,43 @@ namespace E_Learning.Services
             }
             return courseJoined;
         }
+
+        public static GetScheduleResponse GetSchedule(string studentId)
+        {
+            var studentJoinedCourses = Storage.Database.studentsJoinedCourse;
+            var courses = Storage.Database.courses;
+            var schedules = Storage.Database.schedules;
+
+            var courseMapping = courses.ToDictionary(x => x.Id, x => x.Title);
+            var scheduleResponse = new GetScheduleResponse();
+
+            var coursesId = studentJoinedCourses
+                .Where(x => x.StudentId == studentId)
+                .Select(x => x.CouresId)
+                .ToList();
+
+            foreach (var courseId in coursesId)
+            {
+                var getSchedule = schedules
+                    .Where(x => x.CourseId == courseId)
+                    .Select(x => new ScheduleResponse()
+                    {
+                        CouresTitle = courseMapping.ContainsKey(courseId) ? courseMapping[courseId]: string.Empty,
+                        Day = ConvertServices.ConvertDayToString(x.Day),
+                        Section = ConvertServices.ConvertSectionToString(x.Section),
+                        TypeClass = ConvertServices.ConvertClassifyToString(x.TypeClass),
+                    })
+                    .ToList();
+                scheduleResponse.Schedule = scheduleResponse.Schedule
+                    .Concat(getSchedule)
+                    .ToList();
+            }
+            return scheduleResponse;
+        }
     }
 }
+
+/*
+
+ 
+ */

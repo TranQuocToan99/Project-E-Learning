@@ -6,8 +6,5 @@ namespace E_Learning.WebModels
     {
         [Required]
         public string Title { get; set; }
-
-        [Required]
-        public string Address { get; set; }
     }
 }

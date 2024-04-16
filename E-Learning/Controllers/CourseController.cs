@@ -17,18 +17,18 @@ namespace E_Learning.Controllers
             _logger = logger;
         }
 
-        [HttpGet("teachers")]
+        [HttpGet("courses")]
         public IActionResult Get()
         {
-            var courses = CourseServices.GetAllCourse();
-            if (courses != null)
+            var coursesResponse = CourseServices.GetAllCourse();
+            if (coursesResponse != null)
             {
-                return Ok(courses);
+                return Ok(coursesResponse);
             }
             return BadRequest();
         }
 
-        [HttpPost("add-course")]
+        [HttpPost("create-course")]
         public IActionResult Create([FromBody] CreateCourseRequest request)
         {
             var createResponse = CourseServices.CreateCourse(request);
@@ -64,10 +64,10 @@ namespace E_Learning.Controllers
         [HttpGet("bio-course")]
         public IActionResult GetBio([FromQuery] string courseId)
         {
-            var bioResponse = CourseServices.GetBioCourse(courseId);
-            if (bioResponse != null)
+            var bioCourseResponse = CourseServices.GetBioCourse(courseId);
+            if (bioCourseResponse != null)
             {
-                return Ok(bioResponse);
+                return Ok(bioCourseResponse);
             }
             return NotFound($"Can be not found this id: {courseId}");
         }
@@ -75,7 +75,7 @@ namespace E_Learning.Controllers
         [HttpGet("students-joined-course")]
         public IActionResult GetStudentsJoinedCourse([FromQuery] string courseId)
         {
-            var studentRespone = CourseServices.GetStudentJoinedJoinedCourse(courseId);
+            var studentRespone = CourseServices.GetStudentsJoinedCourse(courseId);
             if(studentRespone != null)
             {
                 return Ok(studentRespone);

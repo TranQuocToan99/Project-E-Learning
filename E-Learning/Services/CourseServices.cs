@@ -48,7 +48,8 @@ namespace E_Learning.Services
 
                 return new UpdateCourseResponse()
                 {
-                    Title = newCourse.Title,
+                    Id = newCourse.Id,
+                    Title = newCourse.Title
                 };
             }
             return null;
@@ -66,6 +67,7 @@ namespace E_Learning.Services
 
                 return new DeleteCourseResponse()
                 {
+                    Id = targetCourse.Id,
                     Title = targetCourse.Title,
                     IsDeleted = targetCourse.IsDeleted
                 };
@@ -76,41 +78,42 @@ namespace E_Learning.Services
         public static GetBioCourseResponse GetBioCourse(string courseId)
         {
             var courses = Storage.Database.courses;
+
             var targetCourse = courses
                 .FirstOrDefault(x => x.Id == courseId);
             if (targetCourse != null)
             {
                 return new GetBioCourseResponse()
                 {
+                    Id = targetCourse.Id,
                     Title = targetCourse.Title,
                 };
             }
             return null;
         }
 
-        public static GetStudentJoinedCourseResponse GetStudentJoinedJoinedCourse(string courseId)
+        public static GetStudentJoinedCourseResponse GetStudentsJoinedCourse(string courseId)
         {
-            var studentJoinedCourses = Storage.Database.studentJoinedCourses;
+            var studentsJoinedCourse = Storage.Database.studentsJoinedCourse;
             var students = Storage.Database.students;
+            var studentsMapping = students.ToDictionary(x => x.Id, x => x.Name);
             var studentJoined = new GetStudentJoinedCourseResponse();
 
-            var targetStudentsId = studentJoinedCourses
+            var studentsId = studentsJoinedCourse
                 .Where(x => x.CouresId == courseId)
                 .Select(x => x.StudentId)
                 .ToList();
 
-            foreach (var studentId in targetStudentsId)
+            foreach (var studentId in studentsId)
             {
-                var getStudent = students
-                    .FirstOrDefault(x => x.Id == studentId);
-                if (getStudent != null)
+                if (studentsMapping.ContainsKey(studentId))
                 {
                     var student = new StudentResponse()
                     {
-                        Id = getStudent.Id,
-                        Name = getStudent.Name
+                        Id = studentId,
+                        Name = studentsMapping[studentId]
                     };
-                    studentJoined.StudentsJoined.Add(student);
+                    studentJoined.StudentsJoined.Add(student);  
                 }
             }
             return studentJoined;

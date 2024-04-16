@@ -81,7 +81,18 @@ namespace E_Learning.Controllers
             }
             return NotFound($"Can be not found this id: {studentId}");
         }
+
+        [HttpGet("schedule")]
+        public IActionResult GetSchedule([FromQuery] string studentId)
+        {
+            var scheduleResponse = StudentServices.GetSchedule(studentId);
+            if (scheduleResponse != null)
+            {
+                return Ok(scheduleResponse);
+            }
+            return NotFound($"Can be not found this id: {studentId}");
+        }
     }
 }
 
-   
+

@@ -101,15 +101,67 @@ namespace E_Learning.Services
 
         public static GetCourseTeachResponse GetCourses(string teacherId)
         {
-            var studentJoinedCourses = Storage.Database.studentJoinedCourses;
+            var studentJoinedCourses = Storage.Database.studentsJoinedCourse;
             var courses = Storage.Database.courses;
+            var courseTeacheResponse = new GetCourseTeachResponse();
 
             var coursesId = studentJoinedCourses
-                .Where(x => x.Id == teacherId)
+                .Where(x => x.TeacherId == teacherId)
                 .Select(x => x.CouresId)
                 .ToList();
+
+            foreach (var courseId in coursesId)
+            {
+                var getCourse = courses
+                     .FirstOrDefault(x => x.Id == courseId);
+                if (getCourse != null)
+                {
+                    var course = new CourseTeachResponse()
+                    {
+                        Id = getCourse.Id,
+                        Title = getCourse.Title,
+                    };
+                    courseTeacheResponse.CoursesTeach.Add(course);
+                }
+            }
+            return courseTeacheResponse;
+        }
+
+        public static GetStudentsInCourseResponse GetStudentsInCourse(GetStudentInCourseRequest request, string teacherId)
+        {
+            var studentJoinedCourses = Storage.Database.studentsJoinedCourse;
+            var courses = Storage.Database.courses;
+            var students = Storage.Database.students;
+            var getStudentsInCourseResponse = new GetStudentsInCourseResponse();
+
+            var getCourse = courses
+              .FirstOrDefault(x => x.Id == request.CouresId);
+            if (getCourse != null)
+            {
+                getStudentsInCourseResponse.CourseId = getCourse.Id;
+                getStudentsInCourseResponse.CourseTitle = getCourse.Title;
+            }
+
+            var studentsId = studentJoinedCourses
+                .Where(x => x.TeacherId == teacherId)
+                .Select(x => x.StudentId)
+                .ToList();
+            foreach (var studentId in studentsId)
+            {
+                var getStudent = students
+                    .FirstOrDefault(x => x.Id == studentId);
+                if (getStudent != null)
+                {
+                    var student = new StudentInCourseRespons()
+                    {
+                        Id = getStudent.Id,
+                        Name = getStudent.Name,
+                        DOB = getStudent.DOB
+                    };
+                    getStudentsInCourseResponse.StudentsInCourse.Add(student);
+                }
+            }
+            return getStudentsInCourseResponse;
         }
     }
 }
-
-//<CourseResponse>

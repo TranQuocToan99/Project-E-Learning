@@ -19,6 +19,13 @@ namespace E_Learning.Storage
                 DOB = new DateTime(1998, 01, 05),
                 Address = "Vung Tau",
                 IsDeleted = false},
+
+              new Student(){
+                Id = "3",
+                Name = "Quy",
+                DOB = new DateTime(2000, 04, 30),
+                Address = "Ha Tinh",
+                IsDeleted = false},
         };
 
         public static List<Teacher> teachers = new List<Teacher>()
@@ -65,27 +72,27 @@ namespace E_Learning.Storage
             },
         };
 
-        public static List<StudentJoinedCourse> studentJoinedCourses = new List<StudentJoinedCourse>()
+        public static List<StudentJoinedCourse> studentsJoinedCourse = new List<StudentJoinedCourse>()
         {
             new StudentJoinedCourse(){
                 Id = "1",
-                StudentId = "1", // Toan
-                CouresId = "1", // lap trinh co ban
-                TeacherId = "1" // Phuc
+                StudentId = "1",
+                CouresId = "1",
+                TeacherId = "1"
             },
 
             new StudentJoinedCourse(){
                 Id = "2",
-                StudentId = "2", //Cuong
-                CouresId = "2", // Giai thuat
-                TeacherId = "1" // Phuc
+                StudentId = "2",
+                CouresId = "2",
+                TeacherId = "1"
             },
 
               new StudentJoinedCourse(){
                 Id = "3",
-                StudentId = "1",
+                StudentId = "3",
                 CouresId = "2",
-                TeacherId = "2"
+                TeacherId = "1"
             },
 
             new StudentJoinedCourse(){
@@ -94,6 +101,35 @@ namespace E_Learning.Storage
                 CouresId = "2",
                 TeacherId = "2"
             },
+        };
+
+        public static List<Schedule> schedules = new List<Schedule>()
+        {
+             new Schedule() {
+                 Id = "1",
+                CourseId = "1",
+                Day = Day.Monday,
+                Section = Section.Section1,
+                TypeClass = Classify.Theory
+             },
+
+              new Schedule() {
+                 Id = "2",
+                CourseId = "1",
+                Day = Day.Tuesday,
+                Section = Section.Section1,
+                TypeClass = Classify.Pratice
+             },
+
+             new Schedule() {
+                 Id = "3",
+                CourseId = "2",
+                Day = Day.Tuesday,
+                Section = Section.Section2,
+                TypeClass = Classify.Theory
+             },
+
+
         };
     }
 }

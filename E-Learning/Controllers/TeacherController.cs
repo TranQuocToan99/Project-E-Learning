@@ -74,10 +74,21 @@ namespace E_Learning.Controllers
         [HttpGet("classes")]
         public IActionResult GetClasses([FromQuery] string teacherId)
         {
-            var classesResponse = TeacherServices.GetCourseTeacherTeach(teacherId);
+            var classesResponse = TeacherServices.GetCourses(teacherId);
             if (classesResponse != null)
             {
                 return Ok(classesResponse);
+            }
+            return NotFound($"Can be not found this id: {teacherId}");
+        }
+
+        [HttpGet("students-in-course")]
+        public IActionResult GetStudentInCourse([FromQuery] GetStudentInCourseRequest request, string teacherId)
+        {
+            var studentInCourseResponse = TeacherServices.GetStudentsInCourse(request, teacherId);
+            if(studentInCourseResponse != null)
+            {
+                return Ok(studentInCourseResponse);
             }
             return NotFound($"Can be not found this id: {teacherId}");
         }
